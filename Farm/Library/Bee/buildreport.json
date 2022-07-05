@@ -1,0 +1,20 @@
+{
+"instructions_readme": "1) Open Chrome, 2) go to chrome://tracing, 3) click Load, 4) navigate to this file.",
+
+"traceEvents":[
+{ "pid": "Unity", "ph":"M", "name": "process_name", "args": {"name": "Unity"} },
+{ "pid": "Unity", "ph":"M", "name": "process_sort_index", "args": {"sort_index": -100} },
+{ "pid": "Unity", "tid": 1, "ph":"M", "name": "thread_name", "args": {"name": ""} },
+{ "pid": "Unity", "tid": 1,"ts": 97294579127.4,"dur": 58881506.1, "ph":"X", "name": "Build player"},
+{ "pid": "Unity", "tid": 1,"ts": 97294580462.2,"dur": 397098.8, "ph":"X", "name": "Preprocess Player"},
+{ "pid": "Unity", "tid": 1,"ts": 97295002006.7,"dur": 58193296.6, "ph":"X", "name": "Prepare For Build"},
+{}
+
+],
+"meta_datetime": "07/05/2022 18:24:52",
+"meta_command_line": "\"C:\\Program Files\\Unity\\Hub\\Editor\\2022.1.5f1\\Editor\\Unity.exe\" -projectpath D:\\Unity\\Farm -useHub -hubIPC -cloudEnvironment production -licensingIpc LicenseClient-den16 -hubSessionId 926aa000-fc4f-11ec-a986-970cba477c47 -accessToken Is5LHkRYPls3gz8Nm0fbW1hiO13NbrLl8yhetKyq-rY009f",
+"meta_command_line_args": "C:\\Program Files\\Unity\\Hub\\Editor\\2022.1.5f1\\Editor\\Unity.exe -projectpath D:\\Unity\\Farm -useHub -hubIPC -cloudEnvironment production -licensingIpc LicenseClient-den16 -hubSessionId 926aa000-fc4f-11ec-a986-970cba477c47 -accessToken Is5LHkRYPls3gz8Nm0fbW1hiO13NbrLl8yhetKyq-rY009f",
+"meta_user_name": "den16",
+"meta_os_version": "Microsoft Windows NT 10.0.19042.0",
+"meta_cpu_count": "16"
+}
