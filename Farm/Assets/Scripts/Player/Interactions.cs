@@ -1,30 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class Interactions : MonoBehaviour
 {
     [Header("Рука")]
-    [SerializeField] public Transform arm;
-    [HideInInspector] public bool flag = false;
+    public Transform armSmall;
+    public Transform armLarge;
+    public bool flag = false;
     private Rigidbody rb;
-    private BoxCollider box;
+
+    [Header("Rig's")]
+    public RigBuilder rbBuilder;
+
+    public enum sizeItem
+    {
+        small = 0,
+        large = 1
+    }
+    public sizeItem size = sizeItem.small;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        box = GetComponent<BoxCollider>();
     }
 
     public void PickUp()
     {
-        if (arm.childCount < 1)
+        if (size == sizeItem.small)
         {
-            transform.SetParent(arm);
-            transform.position = arm.position;
-            transform.rotation = arm.rotation;
-            rb.isKinematic = true;
-            flag = true;
+            if (armSmall.childCount < 1 && armLarge.childCount < 1)
+            {
+                rbBuilder.layers[2].active = false;
+                rbBuilder.layers[1].active = true;
+                transform.SetParent(armSmall);
+                transform.position = armSmall.position;
+                transform.rotation = armSmall.rotation;
+                rb.isKinematic = true;
+                flag = true;
+            }
+        }
+        else if(size == sizeItem.large)
+        {
+            if (armLarge.childCount < 1 && armSmall.childCount < 1)
+            {
+                
+                rbBuilder.layers[1].active = false;
+                rbBuilder.layers[2].active = true;
+                transform.SetParent(armLarge);
+                transform.position = armLarge.position;
+                transform.rotation = armLarge.rotation;
+                rb.isKinematic = true;
+                flag = true;
+            }
         }
     }
 
@@ -43,6 +72,8 @@ public class Interactions : MonoBehaviour
     {
         if (flag == true)
         {
+            rbBuilder.layers[1].active = false;
+            rbBuilder.layers[2].active = false;
             transform.parent = null;
             rb.isKinematic = false;
             flag = false;

@@ -7,7 +7,8 @@ public class RayCharacter : MonoBehaviour
 {
     [Header("Дальность взаимодействия")]
     [SerializeField] private float maxDistance;
-    public Image image;
+    public Image imageE;
+    public Image imageT;
     public Button buttonE;
     public Button buttonT;
     private Ray ray;
@@ -15,10 +16,18 @@ public class RayCharacter : MonoBehaviour
 
     [Header("Радиус взаимодействия")]
     [SerializeField] private float radius;
+    [SerializeField] private bool isGizmos = true;
+
+    private CharacterMove characterMove;
+
+    private void Start()
+    {
+        characterMove = GetComponent<CharacterMove>();
+    }
 
     private void Ray()
     {
-        ray = new Ray(transform.position, transform.forward);
+        ray = new Ray(transform.position + new Vector3(0, 1f, 0), transform.forward);
     }
 
     private void DrawRay()
@@ -30,8 +39,17 @@ public class RayCharacter : MonoBehaviour
         
         if(hit.transform == null)
         {
-            image.enabled = false;
-            buttonE.image.enabled = false;
+            if (characterMove.move == CharacterMove.Move.PC)
+            {
+                imageE.enabled = false;
+                imageT.enabled = false;
+
+            }
+            else if (characterMove.move == CharacterMove.Move.Android)
+{
+                buttonE.image.enabled = false;
+                buttonT.image.enabled = false;
+            }
             Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red);
         }
     }
@@ -40,8 +58,17 @@ public class RayCharacter : MonoBehaviour
     {
         if (hit.transform != null && hit.transform.GetComponent<Interactions>())
         {
-            buttonE.image.enabled = true;
-            image.enabled = true;
+            if (characterMove.move == CharacterMove.Move.PC)
+            {
+                imageE.enabled = true;
+                imageT.enabled = true;
+
+            }
+            else if (characterMove.move == CharacterMove.Move.Android)
+            {
+                buttonE.image.enabled = true;
+                buttonT.image.enabled = true;
+            }
             Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.green);
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -59,11 +86,24 @@ public class RayCharacter : MonoBehaviour
             Rigidbody rigidbody = colliders[i].attachedRigidbody;
             if(rigidbody)
             {
-                buttonE.image.enabled = true;
-                image.enabled = true;
+                if (characterMove.move == CharacterMove.Move.PC)
+                {
+                    imageE.enabled = true;
+                    imageT.enabled = true;
+
+                }
+                else if (characterMove.move == CharacterMove.Move.Android)
+                {
+                    buttonE.image.enabled = true;
+                    buttonT.image.enabled = true;
+                }
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     rigidbody.GetComponent<Interactions>().PickUp();
+                }
+                if(Input.GetKeyDown(KeyCode.Plus))
+                {
+                    //rigidbody;
                 }
             }
             
@@ -102,8 +142,11 @@ public class RayCharacter : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, radius);
+        if (isGizmos == true)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position + new Vector3(0, 1f, 0), radius);
+        }
     }
 
     private void Update()
@@ -112,5 +155,21 @@ public class RayCharacter : MonoBehaviour
         DrawRay();
         Interact();
         Radius();
+
+        if (characterMove.move == CharacterMove.Move.PC)
+        {
+            buttonE.gameObject.SetActive(false);
+            buttonT.gameObject.SetActive(false);
+            imageE.gameObject.SetActive(true);
+            imageT.gameObject.SetActive(true);
+            
+        }
+        else if (characterMove.move == CharacterMove.Move.Android)
+        {
+            imageE.gameObject.SetActive(false);
+            imageT.gameObject.SetActive(false);
+            buttonE.gameObject.SetActive(true);
+            buttonT.gameObject.SetActive(true);
+        }
     }
 }
