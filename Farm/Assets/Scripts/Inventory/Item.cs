@@ -11,5 +11,5 @@ public class Item : ScriptableObject
     [SerializeField] GameObject itemPrefab;
     [SerializeField] int maxAmount;
     [SerializeField] string aboutItem;
-    [SerializeField] Sprite icon;
+    [SerializeField] public Sprite icon;
 }

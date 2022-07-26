@@ -18,11 +18,24 @@ public class RayCharacter : MonoBehaviour
     [SerializeField] private float radius;
     [SerializeField] private bool isGizmos = true;
 
+    [Header("Инвентарь")]
+    public Transform inventoryPanel;
+    public List<Slot> slots = new List<Slot>();
+    [SerializeField] bool isOpenPanel;
+
     private CharacterMove characterMove;
 
     private void Start()
     {
         characterMove = GetComponent<CharacterMove>();
+
+        for (int i = 0; i < inventoryPanel.childCount; i++)
+        {
+            if (inventoryPanel.GetChild(i).GetComponent<Slot>() != null)
+            {
+                slots.Add(inventoryPanel.GetChild(i).GetComponent<Slot>());
+            }
+        }
     }
 
     private void Ray()
@@ -101,12 +114,36 @@ public class RayCharacter : MonoBehaviour
                 {
                     rigidbody.GetComponent<Interactions>().PickUp();
                 }
-                if(Input.GetKeyDown(KeyCode.Plus))
+                if(Input.GetKeyDown(KeyCode.P))
                 {
-                    //rigidbody;
+                    AddItem(rigidbody.gameObject.GetComponent<ItemPrefab>().item, rigidbody.gameObject.GetComponent<ItemPrefab>().amount, rigidbody.gameObject.GetComponent<ItemPrefab>().icon);
+                    Destroy(rigidbody.gameObject);
                 }
             }
             
+        }
+    }
+
+    private void AddItem(Item _item, int _amount, Sprite _icon)
+    {
+        foreach (Slot slot in slots)
+        {
+            if(slot.item == _item)
+            {
+                slot.amount += _amount;
+                return;
+            }
+        }
+        foreach (Slot slot in slots)
+        {
+            if (slot.isEmpty == true)
+            {
+                slot.item = _item;
+                slot.amount = _amount;
+                slot.isEmpty = false;
+                slot.gameObject.GetComponent<Image>().sprite = _icon;
+                return;
+            }
         }
     }
 
@@ -170,6 +207,20 @@ public class RayCharacter : MonoBehaviour
             imageT.gameObject.SetActive(false);
             buttonE.gameObject.SetActive(true);
             buttonT.gameObject.SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (isOpenPanel == true)
+            {
+                inventoryPanel.gameObject.SetActive(false);
+                isOpenPanel = false;
+            }
+            else if (isOpenPanel == false)
+            {
+                inventoryPanel.gameObject.SetActive(true);
+                isOpenPanel = true;
+            }
         }
     }
 }
